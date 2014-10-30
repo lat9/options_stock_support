@@ -1,4 +1,1 @@
-options_stock_support
-=====================
-
-Products' Options' Stock Manager:  Support Thread
+Welcome to the support area for the Products' Options' Stock Manager plugin from Vinos de Frutas Tropicales, available here: http://vinosdefrutastropicales.com/index.php?main_page=product_info&cPath=2_7&products_id=46.
