@@ -157,7 +157,6 @@ and replace it with:
                       $zco_notifier->notify('NOTIFY_ADMIN_PROD_LISTING_ADD_ICON', $product, $additional_icons);
                       echo $additional_icons;
 //-eof-products_options_stock-lat9  *** 1 of 1 ***
-?>
 ```
 
 ### Storefront Changes
