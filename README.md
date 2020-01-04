@@ -1,4 +1,4 @@
-Welcome to the support area for the Products' Options' Stock Manager plugin from Vinos de Frutas Tropicales, available here: http://vinosdefrutastropicales.com/index.php?main_page=product_info&cPath=2_7&products_id=46.
+Welcome to the support area for the Products' Options' Stock Manager plugin from Vinos de Frutas Tropicales, available here: https://vinosdefrutastropicales.com/index.php?main_page=product_info&cPath=2_7&products_id=46.
 
 # Updating Products Options Stock Manager to v4.0.0
 
