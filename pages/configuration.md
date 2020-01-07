@@ -3,7 +3,7 @@
 Once you've installed _POSM_, you can customize the options' stock manager using these settings available in _Configuration->Options' Stock Manager_:
 
 | Field Name | Field Description | Added |
-| ---- | ---- |
+| ---- | ---- | ---- |
 | Products' Options' Stock Manager: Version | Displays the plugin's version number. | &nbsp; |
 | Products' Options' Stock Manager: Release Date | Displays the plugin's release date. | &nbsp; |
 | General: Enable Products' Options' Stock Manager? | Allows you to easily enable or disable the overall _POSM_ functionality in your store. This allows you to install the plugin and create your managed options before the store-side processing begins. (Default: **true**) | v1.5.7 |
