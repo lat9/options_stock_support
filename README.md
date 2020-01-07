@@ -4,9 +4,11 @@ If you are upgrading a _POSM_ installation from a version _prior to_ v4.0.0, cli
 
 I've started to migrate the majority of the plugin's documentation here from the distributed readme to reduce the overall size of that distribution.  Choose from one of the following links:
 
-- [Admin-level Changes and Additions](./pages/admin_interfaces.md)
-- [Admin-level Configuration Settings](./pages/configuration.md)
 - [Storefront Changes](./pages/storefront_interfaces.md)
+- Admin Interfaces
+  - [Changes and Additions](./pages/admin_interfaces.md)
+  - [Configuration Settings](./pages/configuration.md)
+  - [DbIo Integration](./pages/dbio.md)
 
 
 
