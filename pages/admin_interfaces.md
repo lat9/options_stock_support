@@ -27,8 +27,8 @@ This tool allows you to define and manage options-specific stock for the product
 
 There's a lot going on on this page, here's a breakdown:
 
-1.  The **View All** button in the top-right portion of the screen will take you to the [Catalog->Options' Stock — View All](#view-all) tool; refer to the linked section for more information.
-2.  The **Define Labels** button in the top-right portion of the screen will take you to the [Localization->Out-of-Stock Labels](#moosl) tool; refer to the linked section for more information.
+1.  The **View All** button in the top-right portion of the screen will take you to the [Catalog->Options' Stock — View All](#catalog-options-stock-view-all) tool; refer to the linked section for more information.
+2.  The **Define Labels** button in the top-right portion of the screen will take you to the [Localization->Out-of-Stock Labels](#localization-out-of-stock-labels) tool; refer to the linked section for more information.
 3.  The upper section is a form containing four (4) fields — any change results in the form's auto-submittal. Each of these selections are _remembered_ in the logged-in admin's session.
     *   A _category_ dropdown; choose either _All categories_ or the specific category for which products are displayed.
     *   A checkbox, identifying whether or not to include disabled products in the products' drop-down.
