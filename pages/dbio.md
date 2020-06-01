@@ -33,10 +33,15 @@ The import's processing, on a record-by-record basis, attempts to identify the a
 Once an import-record's product has been identified, the handler next validates the `v_products_options_combination` value. This value identifies the option/option-value pairs for the current record's import; the field is formatted as `option_name1**~**option_value_name1[**^**option_name2**~**option_value_name2 …]`, where the option-names and option-value-names are specified _in the store's **default** language_. Processing continues in the sequence described in the following table, stopping whenever the record has been determined to be _not importable_.
 
 | Condition | Action Taken |
+| ----- | ----- |
 | No option found in the store's database matching _option_name<sub>n</sub>_ | The record is _not importable_. |
-| No option-value found in the store's database matching _option_value_name<sub>n</sub>_ | If a **_unique_** _option_name<sub>n</sub>_ has been located and no other issues are found with the record, _option_value_name<sub>n</sub>_ will be created and associated with _option_name<sub>n</sub>_ … for **all** languages supported by the store. Otherwise, the record is _not importable_. |
-| No attribute is found for the current product for the combination _option_name<sub>n</sub>~option_value_name<sub>n</sub>_ | The option-combination is added (with default values) as an attribute for the current product. |
+| No option-value found in the store's database matching _option_value_name<sub>n</sub>_ | If a **_unique_** _option_name<sub>n</sub>_ has been located and no other issues are found with the record, _option_value_name<sub>n</sub>_ will be created and associated with _option_name<sub>n</sub>_ … for **all** languages supported by the store. Otherwise, the record is _not importable_. See _Note 1_, below. |
+| No attribute is found for the current product for the combination _option_name<sub>n</sub>~option_value_name<sub>n</sub>_ | The option-combination is added (with default values) as an attribute for the current product. See _Note 2_, below. |
 |All previous checks have passed. | The product's option-combination is either added to, updated in or removed from the _POSM_ configuration in the database. |
+
+**Notes:**
+1. For _POSM_ versions prior to v4.1.5, newly-added option-values' sort-orders are set to `0`.  _POSM_ v4.1.5 and later set the sort order to the maximum sort-order of the option-values currently defined for the option, plus `5`.
+2. For _POSM_ versions prior to v4.1.5, newly-added attribute-values' sort-orders are set to `0`.  _POSM_ v4.1.5 and later set the sort order to be that associated with the specified option-value.
 
 ## DbIoOptionsStockUpdateHandler
 
