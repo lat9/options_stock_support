@@ -51,6 +51,16 @@ Here's what the screen looks like when displaying the same product, but with som
 
 Once the product has options' stock to manage, you can enter the _Model/SKU_ for each option-combination; starting with v2.1.4 of _POSM_, the base product's Model/SKU is displayed as a reference in the button rows. You can have different out-of-stock labels (and/or associated dates) for each combination. The **Out-of-Stock Date** input displays _only_ if the associated **Out-of-Stock Label** contains the date-insertion tag **[date]**.
 
+Use the middle form, showing the options, out-of-stock label and stock-quantity to quickly update or change options' quantities.  For the example shown above, let's say you wanted to increase the quantity of each variant with a ***Color*** of *Red* by 3.  You'll
+
+1. Choose `Red` from the `Color` dropdown, leaving the `Size` as `* (All)`.
+2. Set the `Stock Quantity` value to 3.
+3. Ensure that the `Add to Quantity` radio-button is selected and click the `Insert` button.
+
+You'll receive a javascript confirmation of the update and, once accepted, each of the `Red` colored items' quantities will be increased by 3.
+
+If, instead, you want to specify the quantity for those items, e.g. if all *Red* colored items should have a quantity of 3, you'd choose the `Replace Quantity` radio-button prior to clicking the `Insert` button.
+
 ## Catalog->Options' Stock View All
 
 This tool, introduced in v1.6.0 of _POSM_, provides you with a mechanism to view (and update) your options' stock quantities and model numbers … all on a single page. The tool defaults to showing you _only_ those option-combinations with quantities less than the value you set in _Configuration->Options' Stock Manager->Options' Stock: Re-order Level_.
