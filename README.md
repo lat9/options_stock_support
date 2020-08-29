@@ -1,3 +1,5 @@
+## Current Version: v4.2.1, released 2020-08-29.
+
 Welcome to the support area for the _Products' Options' Stock Manager_ plugin from Vinos de Frutas Tropicales, available [here](https://vinosdefrutastropicales.com/index.php?main_page=product_info&cPath=2_7&products_id=46).
 
 If you are upgrading a _POSM_ installation from a version _prior to_ v4.0.0, click [here](./pages/upgrading_to_posm_400.md) for additional instructions.
