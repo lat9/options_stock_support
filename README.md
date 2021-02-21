@@ -1,4 +1,4 @@
-## Current Version: v4.2.3, released 2021-01-17.
+## Current Version: v4.2.4, released 2021-02-21.
 
 Welcome to the support area for the _Products' Options' Stock Manager_ plugin from Vinos de Frutas Tropicales, available [here](https://vinosdefrutastropicales.com/index.php?main_page=product_info&cPath=2_7&products_id=46).
 
