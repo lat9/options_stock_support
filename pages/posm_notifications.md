@@ -2,7 +2,7 @@
 
 ## Notification Changes
 
-The major change in POSM v4.4.0 is the migration of its notifications to use a `NOTIFY_` prefix &mdash; otherwise, any auto-loaded observers you've developed will fail to get that message in zc158!  The *legacy* notifications are still present in POSM v4.4.0 to support any back-testing needed to your custom observers as you convert them to use the now-current forms of notification.
+One of the major changes in POSM v4.4.0 is the migration of its notifications to use a `NOTIFY_` prefix  otherwise, any observers you've developed that use the [camelCased event-name syntax](https://docs.zen-cart.com/dev/code/notifiers/#camelcased-event-name) will fail to get that message in zc158!  The *legacy* notifications are still present in POSM v4.4.0 to support any back-testing needed to your custom observers as you convert them to use the now-current forms of notification.
 
 ***Note***: All *legacy* notifications will be removed in a future version of POSM.
 
@@ -16,8 +16,6 @@ Indicates that POSM's AJAX processing is preparing to gather information about t
 
 ##### Parameters
 
-`$p1`: n/a, an empty string.
-
 `$p2`: A reference to the `$select_clause` variable, initialized to `SELECT posa.options_id, posa.options_values_id, pos.products_quantity AS quantity, pos.pos_name_id AS oos_msg_id, pos.pos_model AS model, pos.pos_date AS oos_date`. An observer can add to this collection of fields.
 
 #### `NOTIFY_AJAX_POSM_DEPENDENCIES_EXTRA_INFO`
@@ -28,7 +26,7 @@ Indicates that POSM's AJAX processing has successfully gathered the product's fi
 
 `$p1`: An associative array of values representing the `$db` fields returned by the just-issued database query.
 
-`$p2`: A reference to the `$extra_info` variable, initialized to an empty string. An observer can append its information here and the value is returned by the AJAX request as an element of the `options_value` array.
+`$p2`: A reference to the `$extra_info` variable, initialized to an empty string. An observer can append its information here and the value is returned by the AJAX request as the 'extra_info' element of the `options_value` array.
 
 #### `NOTIFY_AJAX_POSM_DEPENDENCIES_EXTENSION_INFO`
 
@@ -130,8 +128,6 @@ Indicates that POSM's jQuery processing for its dependent-attributes feature is 
 
 ##### Parameters
 
-`$p1`: n/a, an empty array.
-
 `$p2`: A reference to the `$posm_dependent_attrs_enable` variable, initialized to `(bool)true` if POSM's `POSM_DEPENDENT_ATTRS_ENABLE` configuration is set to 'true'; `(bool)false` otherwise.
 
 ## Admin Notifications Issued
@@ -174,7 +170,7 @@ Issued by the observer during the removal of a product from an order, either req
 
 `$p1`: A read-only value identifying the `$orders_products_id` of the ordered product being removed from the order.
 
-`$p2`: A reference to the `$bypass_quantity_updates` variable, initialized to `(bool)false`.  If an observer sets this value to any other value, the product is not removed from the order.
+`$p2`: A reference to the `$bypass_quantity_updates` variable, initialized to `(bool)false`.  If an observer sets this value to any other value, neither the product variant's quantity nor the base product's overall quantity are updated.
 
 ##### Replaced by
 
@@ -232,9 +228,9 @@ Issued at the beginning of any `update` processing, gives observers a chance to 
 
 ##### Parameters
 
-`$p1`: The number of 'base' `quantity` inputs received from the form's posting.  An observer, for non-checkbox type inputs, ensure that the number of inputs received matches this count.
+`$p1`: The number of 'base' `quantity` inputs received from the form's posting.  An observer, for non-checkbox type inputs, must ensure that the count of each posted input array received matches this count.
 
-`$p2`: A reference to the `$missing_inputs_flag` variable, initialized to a `(bool)false`.  Setting this flag to `(bool)true` will result in the update failing to complete.
+`$p2`: A reference to the `$missing_inputs_flag` variable, initialized to a `(bool)false`.  Setting this flag to `(bool)true` will result in the update failing to complete with a POSM-set error message.
 
 ##### Replaced by
 
@@ -246,7 +242,7 @@ Issued at the beginning of any `update` processing, gives observers a chance to 
 
 ##### Parameters
 
-`$p1`: The number of 'base' `quantity` inputs received from the form's posting.  An observer, for non-checkbox type inputs, ensure that the number of inputs received matches this count.
+`$p1`: The number of 'base' `quantity` inputs received from the form's posting.  An observer, for non-checkbox type inputs,  must ensure that the count of each posted input array received matches this count.
 
 `$p2`: A reference to the `$missing_inputs_flag` variable, initialized to a `(bool)false`.   Setting this flag to `(bool)true` will result in the update failing to complete.
 
@@ -338,12 +334,10 @@ None.
 
 Issued just prior to the `</head>` for the page; an observer can identify additional CSS styles to be inserted into a `<style>` tag or javascript (**not jQuery**) to be inserted into a `<script>` tag.
 
-1.  An alternative to the use of this notification is to include add-on specific CSS/JS content via separate files present in the admin's `/includes/css` and   `/includes/javascript` sub-directories, respectively.  Files' names to be loaded for this page should start with 'products_options_stock_' for the files to be auto-loaded.
+1.  An alternative to the use of this notification is to include add-on specific CSS/JS content via separate files present in the admin's `/includes/css` and   `/includes/javascript` sub-directories, respectively.  Files' names to be loaded for this page should start with `products_options_stock_` for the files to be auto-loaded.
 2. Since this javascript is loaded *prior to* the load of the jQuery base, any JS content must be **pure** javascript.  Any jQuery content required by the POSM extension for this page should be placed in the `/includes/javascript` sub-directory, as identified above.
 
 ##### Parameters
-
-`$p1`: An empty string, unused.
 
 `$p2`: A reference to the `$css_content` string, set initially to an empty string.  If, on return, the value is not empty, the string is rendered in a `<style>` tag.
 
@@ -369,9 +363,9 @@ Issued during the creation of the array of the current product's managed variant
 
 ##### Parameters
 
-`$p1`:  An array of all `products_options_stock` table fields associated with the current option.  The `pos_id` element of the array defines the current element of the `$pos_product_options` array being processed.
+`$p1`:  An associative array of all `products_options_stock` table fields associated with the current option.  The `pos_id` element of the array defines the current element of the `$pos_product_options` array being processed.
 
-`$p2`: A reference to the `$pos_product_options` array.  An observer is expected to create elements in the current `pos_id` element containing values in the `info_array` supplied to observers of the `NOTIFY_POSM_LOWER_CONTENT_INSERT_B4_QTY` and `NOTIFY_POSM_LOWER_CONTENT_INSERT_AFTER_QTY` notifications described below.
+`$p2`: A reference to the `$pos_product_options` array.  An observer is expected to add fields in the current `pos_id` element containing values in the `info_array` supplied to observers of the `NOTIFY_POSM_LOWER_CONTENT_INSERT_B4_QTY` and `NOTIFY_POSM_LOWER_CONTENT_INSERT_AFTER_QTY` notifications described below.
 
 ##### Replaced by
 
@@ -405,6 +399,10 @@ None.
 
 Issued prior to the rendering of the data for the upper form's ***Quantity*** heading column.  Watching observers are expected to fill this array with additional heading elements to encompass the additional columns that were registered in the `POSM_START_HTML_OUTPUT` notification!
 
+##### Parameters
+
+`$p2`: A reference to the `$additional_content` array (initialized as an empty array). 
+
 The `$additional_content` array is a numerically-indexed array, with each array element containing an associative array containing:
 
 - `text`.  This **required** entry identifies the text to be associated with the column heading, even if it's blank!
@@ -424,10 +422,6 @@ or the observer could simply identify a single column spanning 2 columns:
 $p2[] = ['text' => '&nbsp;', 'params' => 'colspan="2"']
 ```
 
-##### Parameters
-
-`$p2`: A reference to the `$additional_content` array (initialized as an empty array). 
-
 #### `POSM_UPPER_CONTENT_INSERT` (legacy)
 
 Issued prior to the rendering of the table-heading for the upper form's ***Quantity*** input column.  Observers watching this notification were expected to directly echo `<td></td>` pairs to identify their additional column data ... one column (or a collective `colspan`) for each additional column that they've registered in the `POSM_START_HTML_OUTPUT` notification!
@@ -442,7 +436,7 @@ None.
 
 #### `NOTIFY_POSM_UPPER_CONTENT_INSERT`
 
-Issued prior to the rendering of the element for the upper form's ***Quantity*** input column.  Watching observers are expected to fill this array with additional data to encompass the additional columns that were registered in the `POSM_START_HTML_OUTPUT` notification!
+Issued prior to the rendering of the element for the upper form's ***Quantity*** input column.  Watching observers are expected to fill this array with additional data to encompass the additional columns that were registered in the `NOTIFY_POSM_START_HTML_OUTPUT` notification!
 
 ##### Parameters
 
@@ -481,13 +475,13 @@ None.
 
 #### `NOTIFY_POSM_SET_INSTRUCTIONS`
 
-Issued after the rendering of the tool's instructions..  Watching observers are expected to fill this array with additional headings to encompass the additional columns that were registered in the `POSM_START_HTML_OUTPUT` notification!
-
-The `$additional_instructions` array is a numerically-indexed array, with each array element containing string to be output as a single, full-width, table row.
+Issued after the rendering of the tool's instructions, enabling a POSM extension to include its instructions on the screen.
 
 ##### Parameters
 
 `$p2`: A reference to the `$additional_instructions` array (initialized as an empty array). 
+
+The `$additional_instructions` array is a numerically-indexed array, with each array element containing string to be output as a single, full-width, table row.
 
 #### `POSM_LOWER_HEADING_INSERT` (legacy)
 
@@ -520,7 +514,7 @@ The `$extra_headings` value, if not `false`,  is a numerically-indexed array, wi
 
 #### `NOTIFY_POSM_LOWER_HEADING_INSERT_B4_QTY`
 
-Issued *prior to* the rendering of the lower-form's ***Quantity*** column heading.   Observers can 'split' their added columns to be either before (using this notification) or after (using the `POSM_LOWER_HEADING_INSERT_AFTER_QTY` notification) the base tool's ***Quantity*** column.  Between their response to the two notifications, watching observers are expected to fill this array with additional data elements to encompass the additional columns that were registered in the `POSM_START_HTML_OUTPUT` notification!
+Issued *prior to* the rendering of the lower-form's ***Quantity*** column heading.   Observers can 'split' their added columns to be either before (using this notification) or after (using the `NOTIFY_POSM_LOWER_HEADING_INSERT_AFTER_QTY` notification) the base tool's ***Quantity*** column.  Between their response to the two notifications, watching observers are expected to fill this array with additional data elements to encompass the additional columns that were registered in the `NOTIFY_POSM_START_HTML_OUTPUT` notification!
 
 ##### Parameters
 
@@ -565,7 +559,7 @@ The `$extra_headings` variable, if not `false`, is a numerically-indexed array, 
 
 #### `NOTIFY_POSM_LOWER_HEADING_INSERT_AFTER_QTY`
 
-Issued *after* the rendering of the lower form's ***Quantity*** column heading.  Observers can 'split' their added columns to be either after (using this notification) or before (using the `POSM_LOWER_HEADING_INSERT_B4_QTY` notification) the base tool's ***Quantity*** column.  Between their response to the two notifications, watching observers are expected to fill this array with additional data elements to encompass the additional columns that were registered in the `POSM_START_HTML_OUTPUT` notification!
+Issued *after* the rendering of the lower form's ***Quantity*** column heading.  Observers can 'split' their added columns to be either after (using this notification) or before (using the `POSM_LOWER_HEADING_INSERT_B4_QTY` notification) the base tool's ***Quantity*** column.  Between their response to the two notifications, watching observers are expected to fill this array with additional data elements to encompass the additional columns that were registered in the `NOTIFY_POSM_START_HTML_OUTPUT` notification!
 
 ##### Parameters
 
@@ -644,11 +638,11 @@ The `$lower_content` value, if not `false`,  is a numerically-indexed array, wit
 
 #### `NOTIFY_POSM_LOWER_CONTENT_INSERT_B4_QTY`
 
-Issued *prior to* the rendering of the lower form's ***Quantity*** input column.  Observers can 'split' their added columns to be either before (using this notification) or after (using the `POSM_LOWER_CONTENT_INSERT_AFTER_QTY` notification) the base tool's ***Quantity*** column.  Between their response to the two notifications, watching observers are expected to fill this array with additional data elements to encompass the additional columns that were registered in the `POSM_START_HTML_OUTPUT` notification!
+Issued *prior to* the rendering of the lower form's ***Quantity*** input column.  Observers can 'split' their added columns to be either before (using this notification) or after (using the `NOTIFY_POSM_LOWER_CONTENT_INSERT_AFTER_QTY` notification) the base tool's ***Quantity*** column.  Between their response to the two notifications, watching observers are expected to fill this array with additional data elements to encompass the additional columns that were registered in the `NOTIFY_POSM_START_HTML_OUTPUT` notification!
 
 ##### Parameters
 
-`$p1`: An associative array identifying the `pos_id` associated with the current row, the current tool's `action`, as well as the `info_array` for the row, containing the data previously gathered via one of the `POSM_ADD_PRODUCT_OPTION`, `POSM_ADD_PRODUCT_OPTION2` or `NOTIFY_POSM_ADD_PRODUCT_OPTION` notifications. 
+`$p1`: An associative array identifying the `pos_id` associated with the current row, the current tool's `action`, as well as the `info_array` for the row, containing the data previously gathered via the `NOTIFY_POSM_ADD_PRODUCT_OPTION` notification. 
 
 `$p2`: A reference to the `$lower_content` array (initialized as an empty array). 
 
@@ -692,11 +686,11 @@ The `$lower_content` variable, if not `false`, is a numerically-indexed array, w
 
 #### `NOTIFY_POSM_LOWER_CONTENT_INSERT_AFTER_QTY`
 
-Issued *after* the rendering of the lower form's ***Quantity*** input column.   Observers can 'split' their added columns to be either after (using this notification) or before (using the `POSM_LOWER_CONTENT_INSERT_B4_QTY` notification) the base tool's ***Quantity*** column.  Between their response to the two notifications, watching observers are expected to fill this array with additional data elements to encompass the additional columns that were registered in the `POSM_START_HTML_OUTPUT` notification!
+Issued *after* the rendering of the lower form's ***Quantity*** input column.   Observers can 'split' their added columns to be either after (using this notification) or before (using the `NOTIFY_POSM_LOWER_CONTENT_INSERT_B4_QTY` notification) the base tool's ***Quantity*** column.  Between their response to the two notifications, watching observers are expected to fill this array with additional data elements to encompass the additional columns that were registered in the `NOTIFY_POSM_START_HTML_OUTPUT` notification!
 
 ##### Parameters
 
-`$p1`: An associative array identifying the `pos_id` associated with the current row, the current tool's `action`, as well as the `info_array` for the row, containing the data previously gathered via one of the `POSM_ADD_PRODUCT_OPTION`, `POSM_ADD_PRODUCT_OPTION2` or `NOTIFY_POSM_ADD_PRODUCT_OPTION` notifications. 
+`$p1`: An associative array identifying the `pos_id` associated with the current row, the current tool's `action`, as well as the `info_array` for the row, containing the data previously gathered via the `NOTIFY_POSM_ADD_PRODUCT_OPTION` notification. 
 
 `$p2`: A reference to the `$lower_content` array (initialized as an empty array). 
 
@@ -720,13 +714,220 @@ or the observer could simply identify a single column spanning 2 columns:
 $p2[] = ['text' => '&nbsp;', 'params' => 'colspan="2"']
 ```
 
-#### 
+### From `/products_options_stock_view_all.php`
 
+#### `POSM_VIEW_ALL_UPDATE_INIT` (legacy)
 
+Issued at the beginning of any `update` processing, gives observers a chance to record their posted values and ensure that all inputs have been retrieved.
 
+##### Parameters
 
+None.
 
+##### Replaced by
 
+ `NOTIFY_POSM_VIEW_ALL_UPDATE_INIT`, with the same parameters.
 
+#### `POSM_VIEW_ALL_UPDATE` (legacy)
 
+Issued just prior to updating a record in the `products_options_stock` table, giving observers the chance to include their fields in the update.  Observers watching this notification needed to declare `$error` and `$onload` as a global if they needed to disallow a database update based on their error-checking.
+
+##### Parameters
+
+`$p1`: The `$pos_id` of the record being updated.
+
+`$p2`: A reference to the `$posm_sql_data` array with which the `products_options_stock` table record is to be updated.
+
+`$p3`: A reference to the `$where_str` to be used when performing the update.
+
+##### Replaced by
+
+ `NOTIFY_POSM_VIEW_ALL_UPDATE`, using *different* parameters; see below.
+
+#### `NOTIFY_POSM_VIEW_ALL_UPDATE`
+
+Issued just prior to updating a record in the `products_options_stock` table, giving observers the chance to include their fields in the update.  This version of the notification also enables observers to indicate that an error was detected in one of their custom fields, resulting in the database update being bypassed.
+
+##### Parameters
+
+`$p1`: The `$pos_id` of the record being updated.
+
+`$p2`: A reference to the `$posm_sql_data` array with which the `products_options_stock` table record is to be updated.
+
+`$p3`: A reference to the `$where_str` to be used when performing the update.
+
+`$p4`: A reference to the `$error` variable, initialized to a `(bool)false`.   Setting this flag to `(bool)true` will result in the update failing to complete; the observer is expected to have set a message in the `messageStack` identifying the source of the error.
+
+`$p5`: A reference to the `$onload` variable, initialized to an empty string (`''`).   The variable contains script-related actions to be performed on the page body's load.
+
+#### `NOTIFY_POSM_VIEW_ALL_UPDATE_PRODUCT`
+
+Issued during database update processing, once for each base product whose managed options were updated.  Added for POSM v4.4.0.
+
+##### Parameters
+
+`$p1`: The `products_id` of the product from which one or more managed options were updated.
+
+#### `POSM_VIEW_ALL_INSERT_HEAD` (legacy)
+
+Issued just after the rendering of in-line CSS for the page's header; an observer was expected to directly echo any CSS additions.
+
+##### Parameters
+
+`$p2`: A reference to the `$onload` string, identifying any onload processing to be performed for the page.
+
+##### Replaced by
+
+ `NOTIFY_POSM_VIEW_ALL_INSERT_HEAD`, using different parameters and, possibly, methods; see below.
+
+#### `NOTIFY_POSM_VIEW_ALL_INSERT_HEAD`
+
+Issued just after the rendering of in-line CSS for the page's header; an observer can identify additional CSS styles to be inserted into a `<style>` tag or javascript (**not jQuery**) to be inserted into a `<script>` tag.
+
+1.  An alternative to the use of this notification is to include add-on specific CSS/JS content via separate files present in the admin's `/includes/css` and   `/includes/javascript` sub-directories, respectively.  Files' names to be loaded for this page should start with `products_options_stock_view_all_`for the files to be auto-loaded.
+2. Since this javascript is loaded *prior to* the load of the jQuery base, any JS content must be **pure** javascript.  Any jQuery content required by the POSM extension for this page should be placed in the `/includes/javascript` sub-directory, as identified above.
+
+##### Parameters
+
+`$p2`: A reference to the `$onload` string.  The observer should append its onload actions to the pre-existing string.
+
+`$p3`: A reference to the `$css_content` string, set initially to an empty string.  If, on return, the value is not empty, the string is rendered in a `<style>` tag.
+
+`$p4`: A reference to the `$js_content` string, set initially to an empty string.  If, on return, the value is not empty, the string is rendered in a `<script>` tag.
+
+#### `POSM_VIEW_ALL_START_BODY` (legacy)
+
+Issued prior to the in-page rendering, requesting that observers identify the number of columns of data that they will be adding to the upper and lower tables' display.
+
+##### Parameters
+
+`$p2`: Initialized to the count of columns that the POSM ***View All*** tool supplies.  Each observer is expected to update this count by their respective number of added columns.  Upon return from this notification, the constant `STATIC_FIELD_COUNT` is defined with the returned value.
+
+`$p3`: A reference to the `$instructions2` string, initially set to the language constant `TEXT_POS_INSTRUCTIONS2`.  Observers should append their usage instructions to the input string; the resultant value is echoed between a `<p></p>` tag-pair.
+
+##### Replaced by
+
+ `NOTIFY_POSM_VIEW_ALL_START_BODY`, using the same parameters.
+
+#### `POSM_VIEW_ALL_TABLE_HEADING` (legacy)
+
+Issued prior to the rendering of the form's ***Quantity*** column heading.  Observers watching this notification were expected to directly echo `<td></td>` pairs to identify their additional column headings ... one column (or a collective `colspan`) for each additional column that they've registered in the `NOTIFY_POSM_VIEW_ALL_START_BODY` notification!
+
+##### Parameters
+
+None.
+
+##### Replaced by
+
+ `NOTIFY_POSM_VIEW_ALL_TABLE_HEADING`, using different parameters; see below.
+
+#### `NOTIFY_POSM_VIEW_ALL_TABLE_HEADING`
+
+Issued prior to the rendering of the form's ***Quantity*** column heading.  Watching observers are expected to fill this array with additional heading elements to encompass the additional columns that were registered in the `NOTIFY_POSM_VIEW_ALL_START_BODY` notification!
+
+##### Parameters
+
+`$p2`: A reference to the `$additional_content` array (initialized as an empty array). 
+
+The `$additional_content` array is a numerically-indexed array, with each array element containing an associative array containing:
+
+- `text`.  This **required** entry identifies the text to be associated with the column heading, even if it's blank!
+- `align`.  This *optional* entry identifies the alignment (one of `center`, `right` or `left`) to apply to the heading content.
+
+For example, an observer that has indicated that it supplies 2 additional columns should add two column-headings:
+
+```php
+$p2[] = ['text' => 'Column 1', 'align' => 'center'];
+$p2[] = ['text' => 'Column 2'];
+```
+
+#### `POSM_VIEW_ALL_PRODUCTS_NAME` (legacy)
+
+Issued prior to the rendering of each form-row that contains the current product's name (and link).   Observers could add strings (or form elements) to be prepended to that name and link.
+
+##### Parameters
+
+`$p1`: Identifies the `products_id` of the current product.
+
+ `$p2`: A reference to the `$products_name_extra_info` string (initialized as an empty string).
+
+ `$p3`: A reference to the `$products_name_additional_columns` string (initialized as `'<td colspan="' . (STATIC_FIELD_COUNT - 1) . '">&nbsp;</td>'`).
+
+##### Replaced by
+
+ `NOTIFY_POSM_VIEW_ALL_PRODUCTS_NAME`, using different parameters; see below.
+
+#### `NOTIFY_POSM_VIEW_ALL_PRODUCTS_NAME`
+
+Issued prior to the rendering of each form-row that contains a main product's name (and link).   Observers could add strings (or form elements) to be prepended to that name and link and (optionally) insert additional heading-columns into that row.
+
+##### Parameters
+
+`$p1`: Identifies the `products_id` of the current main product.
+
+ `$p2`: A reference to the `$products_name_extra_info` string (initialized as an empty string).
+
+ `$p3`: A reference to the `$additional_content` array (initialized as an empty array).
+
+The `$additional_content` array is a numerically-indexed array, with each array element containing an associative array containing:
+
+- `text`.  This **required** entry identifies the text to be associated with the column data, even if it's blank!
+- `align`.  This *optional* entry identifies the alignment (one of `center`, `right` or `left`) to apply to the content.
+- `params`.  This *optional* entry identifies any additional parameters to apply to the column, e.g. `colspan="3"`.
+
+For example, an observer that has indicated that it supplies 2 additional columns could either add two empty column elements:
+
+```php
+$p2[] = ['text' => '&nbsp;'];
+$p2[] = ['text' => '&nbsp;'];
+```
+
+or the observer could simply identify a single column spanning 2 columns:
+
+```php
+$p2[] = ['text' => '&nbsp;', 'params' => 'colspan="2"']
+```
+
+#### `POSM_VIEW_ALL_INSERT_DATA` (legacy)
+
+Issued *prior to* the rendering of the form's ***Quantity*** input column for the current product variant.  Observers watching this notification were expected to directly echo `<td></td>` pairs to identify their additional column data ... one column (or a collective `colspan`) for each additional column that they've registered in the `POSM_START_HTML_OUTPUT` notification!
+
+##### Parameters
+
+`$p1`: An associative array containing all `products_options_stock` database fields and values for the row's current `pos_id`. 
+
+##### Replaced by
+
+ `NOTIFY_POSM_VIEW_ALL_INSERT_DATA`, using different parameters; see below.
+
+#### `NOTIFY_POSM_VIEW_ALL_INSERT_DATA`
+
+Issued *prior to* the rendering of the form's ***Quantity*** input column for the current product variant.  Watching observers are expected to fill this array with additional form elements to encompass the additional columns that were registered in the `NOTIFY_POSM_VIEW_ALL_START_BODY` notification!
+
+##### Parameters
+
+`$p1`: An associative array containing all `products_options_stock` database fields and values for the row's current `pos_id`. 
+
+`$p2`: A reference to the `$additional_content` array (initialized as an empty array). 
+
+The `$additional_content` array is a numerically-indexed array, with each array element containing an associative array containing:
+
+- `text`.  This **required** entry identifies the text to be associated with the column heading, even if it's blank!
+- `align`.  This *optional* entry identifies the alignment (one of `center`, `right` or `left`) to apply to the content.
+- `params`.  This *optional* entry identifies any additional parameters to apply to the column, e.g. `onclick="runme();"`.
+- `class`.  This *optional* entry identifies any additional extension-specific class to be applied to the column.
+
+For example, an observer that has indicated that it supplies 2 additional columns adds two empty column elements:
+
+```php
+$pos_id = $p1['pos_id'];
+$p2[] = [
+    'text' => zen_draw_input_field("pos_var1[$pos_id]", $var1),
+    'align' => 'center',
+];
+$p2[] = [
+    'text' => zen_draw_input_field("pos_var2[$pos_id]", $var2),
+    'align' => 'center',
+];
+```
 
