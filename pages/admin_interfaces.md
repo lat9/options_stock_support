@@ -29,37 +29,37 @@ There's a lot going on on this page, here's a breakdown:
 
 1.  The **View All** button in the top-right portion of the screen will take you to the [Catalog->Options' Stock — View All](#catalog-options-stock-view-all) tool; refer to the linked section for more information.
 2.  The **Define Labels** button in the top-right portion of the screen will take you to the [Localization->Out-of-Stock Labels](#localization-out-of-stock-labels) tool; refer to the linked section for more information.
-3.  The upper section is a form containing four (4) fields — any change results in the form's auto-submittal. Each of these selections are _remembered_ in the logged-in admin's session.
+3.  The upper section is a form containing four (4) fields — make your selections and then click the associated "Go" button. Each of these selections are _remembered_ in the logged-in admin's session.
     *   A _category_ dropdown; choose either _All categories_ or the specific category for which products are displayed.
     *   A checkbox, identifying whether or not to include disabled products in the products' drop-down.
     *   A checkbox, identifying whether or not a product's model-number is pre-pended to its name in the products' drop-down.
     *   A drop-down selection with which you choose the method by which the products' option-combinations are sorted.
-4.  The products' drop-down list (an auto-submit form) on the left-hand side of the page allows you to choose the product whose options are to be managed. If the product's name is appended with **(*)**, then that product currently has options' stock definitions.  
+4.  The products' drop-down list on the left-hand side of the page allows you to choose the product whose options are to be managed; make your choice and then click the associated "Go" button. If the product's name is appended with **(*)**, then that product currently has options' stock definitions.  
     **Note:** Starting with v1.6.0, any product with low-stock options' definitions is highlighted in <span class="red">red</span> in the product drop-down.
 5.  Once you've selected a product from the dropdown list:
-    1.  the "Attribute Controller" button will take you to the _Catalog->Attributes Controller_ page where you can manage the product's individual attributes.
-    2.  the "edit product" button will take you to the _Catalog->Categories/Products_ page where you can edit the base product's details.
+    1.  Clicking the "Edit Attributes" button will take you to the _Catalog->Attributes Controller_ page where you can manage the product's individual attributes.
+    2.  Clicking the "Edit Product" button will take you to the _Catalog->Categories/Products_ page where you can edit the base product's details.
 6.  Below the product drop-down list, a table is presented showing:
     1.  A column for each of the product's drop-down and/or radio-button attributes with a drop-down list showing all of the possible option values.
-    2.  A drop-down list showing each of the currently-defined out-of-stock labels configured for this plugin. Use this to choose the default label to use for any inserted combinations.
+    2.  A drop-down list showing each of the currently-defined out-of-stock labels configured for this plugin &mdash; so long as more than one has been defined. Use this to choose the default label to use for any *inserted* combinations.
     3.  A quantity input where you identify the stock quantity for each of the options.
-    4.  An "insert" button; click this to insert the option-combinations you've specified. A pop-up confirmation message will appear to make sure that you want to insert the combinations.
+    4.  An "Add" and a "Set" button.  Click the "Add" button to *add* the quantity to any existing option-combinations or click the "Set" button to *replace* existing quantities with the specified value. A pop-up confirmation message will appear to make sure that you want to insert/update the combinations.
 
 Here's what the screen looks like when displaying the same product, but with some options-stock combinations configured:
 
 ![Product with options-stock configured](options_stock_main_configured.jpg)
 
-Once the product has options' stock to manage, you can enter the _Model/SKU_ for each option-combination; starting with v2.1.4 of _POSM_, the base product's Model/SKU is displayed as a reference in the button rows. You can have different out-of-stock labels (and/or associated dates) for each combination. The **Out-of-Stock Date** input displays _only_ if the associated **Out-of-Stock Label** contains the date-insertion tag **[date]**.
+Once the product has options' stock to manage, you can enter the _Model/SKU_ for each option-combination; starting with v2.1.4 of _POSM_, the base product's Model/SKU is displayed as a reference in the button rows. You can have different out-of-stock labels (and/or associated dates) for each combination. The **Back-in-Stock Date** input displays _only_ if the associated **Out-of-Stock Label** contains the date-insertion tag **[date]**.
 
-Use the middle form, showing the options, out-of-stock label and stock-quantity to quickly update or change options' quantities.  For the example shown above, let's say you wanted to increase the quantity of each variant with a ***Color*** of *Red* by 3.  You'll
+Use the middle form, showing the options, out-of-stock label and stock-quantity to quickly update or change multiple options' quantities.  For the example shown above, let's say you wanted to increase the quantity of each variant with a ***Model*** of *Value* by 3.  You'll
 
-1. Choose `Red` from the `Color` dropdown, leaving the `Size` as `* (All)`.
-2. Set the `Stock Quantity` value to 3.
-3. Ensure that the `Add to Quantity` radio-button is selected and click the `Insert` button.
+1. Choose `Value` from the `Model` dropdown, leaving the `Memory` as `* (All)`.
+2. Set the `Qty` value to 3.
+3. Click the "Add" button.
 
-You'll receive a javascript confirmation of the update and, once accepted, each of the `Red` colored items' quantities will be increased by 3.
+You'll receive a javascript confirmation of the update and, once accepted, each of the `Value` models' items' quantities will be increased by 3.
 
-If, instead, you want to specify the quantity for those items, e.g. if all *Red* colored items should have a quantity of 3, you'd choose the `Replace Quantity` radio-button prior to clicking the `Insert` button.
+If, instead, you want to specify the quantity for those items, e.g. if all *Value* models' items should have a quantity of 3, you'd click the "Set" button instead.
 
 ## Catalog->Options' Stock View All
 

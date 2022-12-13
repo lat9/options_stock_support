@@ -45,8 +45,6 @@ Once an import-record's product has been identified, the handler next validates 
 
 ## DbIoOptionsStockUpdateHandler
 
-</noscript>
-
 This handler enables you to export and update configurations for your store's products' option-combinations! The handler can perform the following operations in support of your store's _POSM_ configuration:
 
 *   Export
@@ -59,6 +57,7 @@ The import's processing, on a record-by-record basis, attempts to identify the a
 Once an import-record's product has been identified, the handler next validates the `v_products_options_combination` value. This value identifies the option/option-value pairs for the current record's import; the field is formatted as `option_name1**~**option_value_name1[**^**option_name2**~**option_value_name2 …]`, where the option-names and option-value-names are specified _in the store's **default** language_. Processing continues in the sequence described in the following table, stopping whenever the record has been determined to be _not importable_.
 
 | Condition | Action Taken |
+| ----- | ----- |
 | No option found in the store's database matching _option_name<sub>n</sub>_ | The record is _not importable_. |
 | No option-value found in the store's database matching _option_value_name<sub>n</sub>_ | The record is _not importable_. |
 | No attribute is found for the current product for the combination _option_name<sub>n</sub>~option_value_name<sub>n</sub>_ | The record is _not importable_; use the `DbIoOptionsStockFullHandler` instead. |
