@@ -2,6 +2,6 @@ Welcome to the support area for the _Products' Options' Stock Manager_ plugin fr
 
 **Current Versions**:
 - Products' Options' Stock Manager: v4.5.1, released 2024-05-17.
-- Products' Options' Stock Manager — Price/Weight: v2.3.0, released 2024-02-19.
+- Products' Options' Stock Manager — Price/Weight: v2.3.1, released 2024-06-05.
 
 Please see the plugin's [Wiki](https://github.com/lat9/options_stock_support/wiki) for additional information.
